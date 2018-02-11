@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <title>Document</title>
+    <style>
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 28px;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var width = 700,   // width of svg
+            height = 200,  // height of svg
+            padding = 100; // space around the chart, not including labels
+
+        var flightDetails = {
+            "flightNumber": "EK1129",
+            "std": new Date(2018, 1, 11, 08, 30, 00),
+            "sta": new Date(2018, 1, 12, 18, 45, 00),
+            "stFO": new Date(2018, 1, 09, 07, 50, 00),
+            "stFR": new Date(2018, 1, 10, 08, 30, 00),
+            "stRR": new Date(2018, 1, 12, 04, 30, 00)
+        }
+
+        // display date format
+        var date_format = d3.timeFormat("%d %b");
+
+        // create an svg container
+        var vis = d3.select("body").
+            append("svg:svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        var xScale = d3.scaleTime()
+            .domain([flightDetails.stFO, flightDetails.sta])    // values between for month of january
+            .range([padding, width - padding]);   // map these sides of the chart, in this case 100 and 600
+
+
+        // define the x axis
+        var xAxis = d3.axisBottom().scale(xScale)
+            .tickFormat(date_format);
+
+        // draw x axis with labels and move to the bottom of the chart area
+        vis.append("g")
+            .attr("class", "xaxis axis")  // two classes, one for css formatting, one for selection below
+            .attr("transform", "translate(0," + (height - padding) + ")")
+            .call(xAxis);
+
+        vis.append("text")
+            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+            .attr("transform", "translate(" + (width / 2) + "," + (height - (padding / 2)) + ")")  // centre below axis
+            .text(flightDetails.flightNumber);
+
+        console.log(xScale(new Date()));
+
+        vis.append('circle').attr('cx', xScale(flightDetails.stFO)).attr('cy', height - padding).attr("r", 5);
+        vis.append('circle').attr('cx', xScale(flightDetails.stFR)).attr('cy', height - padding).attr("r", 5);
+        vis.append('circle').attr('cx', xScale(flightDetails.stRR)).attr('cy', height - padding).attr("r", 5);
+        vis.append('circle').attr('cx', xScale(flightDetails.std)).attr('cy', height - padding).attr("r", 5);
+        vis.append('circle').attr('cx', xScale(flightDetails.sta)).attr('cy', height - padding).attr("r", 5);
+        vis.append('circle').attr('cx', xScale(new Date())).attr('cy', height - padding).attr("r", 5);
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // var selector = d3.select('body')
+        //     .selectAll('div')
+        //     .data([10, 20, 30]);
+        // var entering = selector.enter();
+        // entering.append('div')
+        //     .text(function (d) { return d; });
+
+        var selector = d3.select('body').append('div').attr('class', 'container dashboard')
+            .append('svg').attr('height', 1400).attr('width', 1400)
+            .selectAll('line.row').data([10, 20, 30]);
+
+        var entering = selector.enter();0
+        entering.append('line').attr('class', 'row')
+            .attr('x1', 100)
+            .attr('y1', function (d) { return 10 * d; })
+            .attr('x2', 500)
+            .attr('y2', function (d) { return 10 * d; })
+            .attr('stroke', 'green')
+            .attr('stroke-width', 10)
+            .attr('stroke-linecap', 'round')
+            ;
+
+    </script>
+</body>
+
+</html>
